@@ -1,0 +1,7 @@
+export const SET_RPC_PASSWORD = 'SET_RPC_PASSWORD'
+export const SET_RPC_HOST = 'SET_RPC_HOST'
+export const SET_RPC_PORT = 'SET_RPC_PORT'
+export const SET_RPC_APP_ID = 'SET_RPC_APP_ID'
+export const SET_RPC_EXPIRY_MARGIN = 'SET_RPC_EXPIRY_MARGIN'
+
+export const ADD_CALLED_TIME = 'ADD_CALLED_TIME'
