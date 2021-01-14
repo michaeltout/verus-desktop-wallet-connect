@@ -1,0 +1,1 @@
+export const SET_ORIGIN_APP = "SET_ORIGIN_APP"

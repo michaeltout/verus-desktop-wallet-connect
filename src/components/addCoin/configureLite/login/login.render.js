@@ -1,9 +1,15 @@
 import React from 'react';
-import ProtectedInputForm from '../../../../../containers/ProtectedInputForm/ProtectedInputForm'
+import ProtectedInputForm from '../../../ProtectedInputForm';
 
 export const LoginRender = function() {
   return (
-    <div className="d-flex justify-content-center align-items-center flex-column" style={{ paddingBottom: 60 }}>
+    <div style={{
+      height: "100%",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+    }}>
       <ProtectedInputForm 
         heading={`Enter profile password for ${this.props.activeUser.name}`}
         submitBtnText="Add Coin"

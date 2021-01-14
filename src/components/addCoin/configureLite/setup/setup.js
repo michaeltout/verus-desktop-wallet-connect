@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { 
   SetupRender
 } from './setup.render';
-import { setModalNavigationPath } from '../../../../../actions/actionCreators'
-import { getPathParent } from '../../../../../util/navigationUtils'
-import { SIGN_UP } from '../../../../../util/constants/componentConstants'
+import { setNavigationPath } from '../../../../redux/reducers/navigation/navigation.actions'
+import { getPathParent } from '../../../../redux/reducers/navigation/navigation.util'
+import { SIGN_UP } from '../../../../utils/constants'
 
 class Setup extends React.Component {
   constructor(props) {
@@ -25,7 +25,7 @@ class Setup extends React.Component {
 
   submitSeed(seed) {
     this.props.setSeed(seed, () => {
-      this.props.dispatch(setModalNavigationPath(`${getPathParent(this.props.pathArray)}/${SIGN_UP}`))
+      this.props.dispatch(setNavigationPath(`${getPathParent(this.props.pathArray)}/${SIGN_UP}`))
     })
   }
 

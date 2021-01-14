@@ -1,19 +1,18 @@
-import { SET_RPC_APP_ID, SET_RPC_EXPIRY_MARGIN, SET_RPC_HOST, SET_RPC_PASSWORD, SET_RPC_PORT } from './rpc.types'
+import {
+  ADD_CALLED_TIME,
+  SET_RPC_APP_ID,
+  SET_RPC_COIN_REQUEST,
+  SET_RPC_EXPIRY_MARGIN,
+  SET_RPC_PASSWORD,
+  SET_RPC_PORT,
+  SET_RPC_POST_ENCRYPTION,
+} from "./rpc.types";
 
 export const setRpcAppId = (appId) => {
   return {
     type: SET_RPC_APP_ID,
     payload: {
       appId
-    }
-  }
-}
-
-export const setRpcHost = (host) => {
-  return {
-    type: SET_RPC_HOST,
-    payload: {
-      host
     }
   }
 }
@@ -36,7 +35,7 @@ export const setRpcPort = (port) => {
   }
 }
 
-export const setRpcExiryMargin = (expiryMargin) => {
+export const setRpcExpiryMargin = (expiryMargin) => {
   return {
     type: SET_RPC_EXPIRY_MARGIN,
     payload: {
@@ -50,6 +49,24 @@ export const addCalledTime = (time) => {
     type: ADD_CALLED_TIME,
     payload: {
       time
+    }
+  }
+}
+
+export const setRpcPostEncryption = (encryption) => {
+  return {
+    type: SET_RPC_POST_ENCRYPTION,
+    payload: {
+      encryption
+    }
+  }
+}
+
+export const setRpcCoinRequest = (coinRequest) => {
+  return {
+    type: SET_RPC_COIN_REQUEST,
+    payload: {
+      coinRequest
     }
   }
 }

@@ -16,7 +16,7 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import ArrowForward from '@material-ui/icons/ArrowForward';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import passwordStrength from 'passwd-strength';
-import CustomCheckbox from '../CustomCheckbox/CustomCheckbox'
+import CustomCheckbox from './CustomCheckbox'
 import passphraseGenerator from 'agama-wallet-lib/src/crypto/passphrasegenerator';
 import Divider from '@material-ui/core/Divider';
 

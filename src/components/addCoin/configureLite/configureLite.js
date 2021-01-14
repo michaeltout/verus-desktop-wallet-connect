@@ -3,10 +3,19 @@ import { connect } from 'react-redux';
 import { 
   ConfigureLiteRender
 } from './configureLite.render';
-import { setModalNavigationPath } from '../../../../actions/actionCreators'
-import { SETUP, LOGIN, SUCCESS_SNACK, MID_LENGTH_ALERT, ERROR_SNACK, ADD_COIN, AUTHORIZE_COIN } from '../../../../util/constants/componentConstants'
-import { addCoin } from '../../../../actions/actionDispatchers'
-import { authenticateActiveUser, newSnackbar } from '../../../../actions/actionCreators'
+import {
+  SETUP,
+  LOGIN,
+  ADD_COIN,
+  AUTHORIZE_COIN,
+  SEED_STORED_AUTHENTICATED,
+  SEED_STORED_UNAUTHENTICATED,
+  API_SUCCESS,
+} from "../../../utils/constants";
+import { initCoin } from '../../../rpc/calls/initCoin'
+import { authenticateSeed } from '../../../rpc/calls/authenticate'
+import { setNavigationPath } from '../../../redux/reducers/navigation/navigation.actions';
+import { checkAuthentication } from '../../../rpc/calls/checkAuth';
 
 class ConfigureLite extends React.Component {
   constructor(props) {
@@ -26,15 +35,17 @@ class ConfigureLite extends React.Component {
     this._handleError = this._handleError.bind(this)
   }
 
-  componentDidMount() {
-    if (this.props.authenticated[this.props.addCoinParams.mode]) {
+  async componentDidMount() {
+    const authCheck = await checkAuthentication(this.props.addCoinParams.mode)
+
+    if (authCheck.msg === API_SUCCESS && authCheck.result) {
       this.activateCoin()
     } else {
       let navigationAction
       if (this.props.activeUser.pinFile) {
-        navigationAction = setModalNavigationPath(this.props.pathArray.join('/') + '/' + LOGIN)
+        navigationAction = setNavigationPath(this.props.pathArray.join('/') + '/' + LOGIN)
       } else {
-        navigationAction = setModalNavigationPath(this.props.pathArray.join('/') + '/' + SETUP)
+        navigationAction = setNavigationPath(this.props.pathArray.join('/') + '/' + SETUP)
       }
 
       this.props.dispatch(navigationAction)
@@ -49,54 +60,38 @@ class ConfigureLite extends React.Component {
     this.setState({password}, () => { if (callback) callback()})
   }
 
-  _handleError(message) {
-    this.props.dispatch(newSnackbar(ERROR_SNACK, message))
-    this.props.dispatch(setModalNavigationPath(`${ADD_COIN}/${AUTHORIZE_COIN}`))
+  _handleError(error) {
+    console.error(error)
+    this.props.setError(error)
   }
 
-  activateCoin() {
-    this.props.setModalLock(true)
-
+  activateCoin(checkedAuth) {
     this.setState({ loading: true }, async () => {
-      const { addCoinParams, activatedCoins } = this.props
+      const { addCoinParams } = this.props
       const { seed } = this.state
 
       try {
-        if (!this.props.authenticated[this.props.addCoinParams.mode])
-          this.props.dispatch(await authenticateActiveUser(seed));
-  
-        const result = await addCoin(
-          addCoinParams.coinObj,
-          addCoinParams.mode,
-          this.props.dispatch,
-          Object.keys(activatedCoins),
-          addCoinParams.startParams && addCoinParams.startParams.indexOf('-nspv') > -1 ? {
-            nspv: true,
-          } : null
-        );
+        if (!checkedAuth) {
+          const authCheck = await checkAuthentication(addCoinParams.mode)
+          const authenticated = authCheck.msg === API_SUCCESS && authCheck.result
+          if (!authenticated) await authenticateSeed(seed)
+        }
 
-        this.props.setModalLock(false)
+        const result = await initCoin(
+          addCoinParams.chainTicker,
+          addCoinParams.mode,
+          addCoinParams.launchConfig);
   
         if (result.msg === 'error') {
-          this._handleError(result.result)
+          this._handleError(new Error(result.result))
         } else {
-          this.props.dispatch(
-            newSnackbar(
-              SUCCESS_SNACK,
-              `${addCoinParams.coinObj.id} activated in lite mode${
-                addCoinParams.startParams &&
-                addCoinParams.startParams.indexOf("-nspv") > -1
-                  ? " (nspv)"
-                  : ""
-              }!`,
-              MID_LENGTH_ALERT
-            )
-          );
-          this.props.closeModal()
+          this.props.completeAuthorization({
+            authorized: true,
+            error: null
+          });
         }
       } catch (e) {
-        this.props.setModalLock(false)
-        this._handleError(e.message)
+        this._handleError(e)
       }
     })
   }
@@ -108,9 +103,8 @@ class ConfigureLite extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    activeUser: state.users.activeUser,
-    authenticated: state.users.authenticated,
-    activatedCoins: state.coins.activatedCoins
+    coinAuthenticationState: state.rpc.coinAuthenticationState,
+    activeUser: state.user.users[state.user.activeUserId]
   };
 };
 

@@ -1,9 +1,15 @@
 import React from 'react';
-import ProtectedInputForm from '../../../../../containers/ProtectedInputForm/ProtectedInputForm'
+import ProtectedInputForm from '../../../ProtectedInputForm'
 
 export const SetupRender = function() {
   return (
-    <div className="d-flex justify-content-center align-items-center flex-column" style={{ paddingBottom: 65 }}>
+    <div style={{
+      height: "100%",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+    }}>
       { this.state.seedGenerator ? SetupRenderSeedGenerator.call(this) : SetupRenderChoices.call(this) }
     </div>
   );

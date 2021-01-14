@@ -1,11 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { setUserAuth } from '../../../../rpc/calls/setUserAuth';
 import { 
   SignUpRender
 } from './signUp.render';
-import { setUserAuth, newSnackbar } from '../../../../../actions/actionCreators'
-import { SUCCESS_SNACK, MID_LENGTH_ALERT } from '../../../../../util/constants/componentConstants';
-
 
 class SignUp extends React.Component {
   constructor(props) {
@@ -22,15 +20,11 @@ class SignUp extends React.Component {
   }
 
   linkUserWithSeed(password) {
-    this.props.setModalLock(true)
-
     this.setState({ formLock: true }, async () => {
       try {
-        this.props.dispatch(await setUserAuth(this.props.loadedUsers, this.props.activeUser.id, password, this.props.seed))
-        this.props.dispatch(newSnackbar(SUCCESS_SNACK, "User linked with seed!", MID_LENGTH_ALERT))
+        this.props.dispatch(await setUserAuth(this.props.users, this.props.activeUserId, password, this.props.seed))
         this.props.activateCoin()
       } catch (e) {
-        this.props.setModalLock(false)
         console.error(e.message)
         this.setState({ formErrors: e.message, formLock: false })
       }
@@ -48,8 +42,8 @@ class SignUp extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    loadedUsers: state.users.loadedUsers,
-    activeUser: state.users.activeUser
+    users: state.user.users,
+    activeUserId: state.user.activeUserId
   };
 };
 

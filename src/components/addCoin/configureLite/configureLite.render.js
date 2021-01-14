@@ -3,17 +3,15 @@ import {
   LOGIN,
   SETUP,
   SIGN_UP
-} from '../../../../util/constants/componentConstants'
+} from '../../../utils/constants'
 import SignUp from './signUp/signUp'
 import Setup from './setup/setup'
 import Login from './login/login'
 
 export const ConfigureLiteRender = function() {
   const COMPONENT_PROPS = {
-    setModalHeader: this.props.setModalHeader,
     pathArray: this.props.pathArray,
-    setModalLock: this.props.setModalLock,
-    closeModal: this.props.closeModal,
+    completeAuthorization: this.props.completeAuthorization,
     setAddCoinParams: this.props.getAddCoinParams,
     addCoinParams: this.props.addCoinParams,
     seed: this.state.seed,
@@ -44,7 +42,7 @@ export const ConfigureLiteRender = function() {
   };
 
   return (
-    this.props.pathArray[3] ? COMPONENT_MAP[this.props.pathArray[3]] : null
+    this.props.pathArray[1] ? COMPONENT_MAP[this.props.pathArray[1]] : null
   );
 }
 

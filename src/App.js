@@ -1,11 +1,10 @@
-import logo from './logo.svg';
 import './App.css';
-import SignIn from './components/SignIn';
+import AddCoin from './components/addCoin/addCoin';
 
 function App() {
   return (
-    <div className="App">
-      <SignIn />
+    <div style={{ height: "100%", paddingLeft: 48, paddingRight: 48 }} className="App">
+      <AddCoin />
     </div>
   );
 }

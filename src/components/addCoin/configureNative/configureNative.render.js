@@ -6,7 +6,13 @@ export const ConfigureNativeRender = function() {
   return (
     <div
       className="d-sm-flex flex-column justify-content-sm-center"
-      style={{ paddingBottom: 40 }}
+      style={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
     >
       <div
         className="d-flex d-sm-flex justify-content-center justify-content-sm-center"

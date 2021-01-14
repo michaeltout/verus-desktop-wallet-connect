@@ -4,11 +4,13 @@
   is currently.
 */
 
-import { SET_NAVIGATION_PATH } from './navigation.types'
+import { AUTHORIZE_COIN } from '../../../utils/constants';
+import { SET_EXTERNAL_ACTION, SET_NAVIGATION_PATH } from './navigation.types'
 
 export const navigation = (state = {
-  path: '',
-  pathArray: [],
+  path: AUTHORIZE_COIN,
+  pathArray: [AUTHORIZE_COIN],
+  externalAction: ""
 }, action) => {
   switch (action.type) {
     case SET_NAVIGATION_PATH:
@@ -16,6 +18,11 @@ export const navigation = (state = {
         ...state,
         path: action.payload.navigationPath,
         pathArray: action.payload.navigationPathArray
+      };
+    case SET_EXTERNAL_ACTION:
+      return {
+        ...state,
+        externalAction: action.payload.externalAction
       };
     default:
       return state;

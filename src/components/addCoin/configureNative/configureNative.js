@@ -3,19 +3,14 @@ import { connect } from 'react-redux';
 import { 
   ConfigureNativeRender
 } from './configureNative.render';
-import io from 'socket.io-client';
-import { checkZcashParamsFormatted, downloadZcashParams } from '../../../../util/api/setup/zcashParams'
+import { checkZcashParamsFormatted } from '../../../rpc/calls/zcashParams'
 import {
-  ZCPARAMS_SOCKET,
   ADDCOIN_DELAY,
-  ERROR_SNACK,
-  SUCCESS_SNACK,
-  MID_LENGTH_ALERT,
-  ADD_COIN,
-  AUTHORIZE_COIN,
-} from "../../../../util/constants/componentConstants";
-import { addCoin } from '../../../../actions/actionDispatchers'
-import { newSnackbar, setModalNavigationPath } from '../../../../actions/actionCreators'
+  EXTERNAL_ACTION,
+  EXTERNAL_ZCASHPARAMS,
+} from "../../../utils/constants";
+import { initCoin } from '../../../rpc/calls/initCoin'
+import { setExternalAction, setNavigationPath } from '../../../redux/reducers/navigation/navigation.actions';
 
 class ConfigureNative extends React.Component {
   constructor(props) {
@@ -23,60 +18,26 @@ class ConfigureNative extends React.Component {
 
     this.state = {
       done: false,
-      updateProgressBar: {
-        proving: -1,
-        verifying: -1,
-        output: -1,
-        spend: -1,
-        groth16: -1,
-      },
       overallProgress: 0,
       passThrough: false,
 
       //DEPRECATED, TODO: DELETE
       error: false,
     };
-
-    this.socket = io.connect(`http://127.0.0.1:${this.props.config.general.main.agamaPort}`);
-    this.initZcashParamsDl = this.initZcashParamsDl.bind(this)
-    this.updateSocketsData = this.updateSocketsData.bind(this)
-    this.calculateProgress = this.calculateProgress.bind(this)
+    
     this.canPassthrough = this.canPassthrough.bind(this)
     this.addCoin = this.addCoin.bind(this)
     this._handleError = this._handleError.bind(this)
   }
 
   async componentDidMount() {
-    this.props.setModalLock(true)
-    this.socket.on(ZCPARAMS_SOCKET, msg => this.updateSocketsData(msg));
-
     if (await this.canPassthrough()) {
       this.setState({ overallProgress: 100, passThrough: true })
       this.addCoin()
     } else {
-      this.initZcashParamsDl()
+      this.props.dispatch(setExternalAction(EXTERNAL_ZCASHPARAMS))
+      this.props.dispatch(setNavigationPath(EXTERNAL_ACTION))
     }
-  }
-
-  componentWillUnmount() {
-    this.socket.removeAllListeners(ZCPARAMS_SOCKET, msg => this.updateSocketsData(msg));
-  }
-
-  componentWillUnmount() {
-    this.props.setModalLock(false)
-  }
-
-  calculateProgress() {
-    const { updateProgressBar } = this.state
-    let overallProgress = 0
-    
-    for (let key in updateProgressBar) {
-      if (updateProgressBar[key] > -1) {
-        overallProgress += updateProgressBar[key] / Object.keys(updateProgressBar).length
-      }
-    }
-
-    this.setState({ overallProgress })
   }
 
   async canPassthrough() {
@@ -96,97 +57,31 @@ class ConfigureNative extends React.Component {
     }
   }
 
-  initZcashParamsDl() {
-    this.setState({
-      updateProgressBar: {
-        proving: 0,
-        verifying: 0,
-        output: 0,
-        spend: 0,
-        groth16: 0,
-      },
-      done: false,
-    })
-
-    downloadZcashParams(this.props.config.general.native.zcashParamsSrc)
-    .then(res => {
-      if (res.msg === 'success') {
-        this.props.dispatch(newSnackbar(SUCCESS_SNACK, "ZCash parameter download started!", MID_LENGTH_ALERT))
-      } else {
-        this.props.dispatch(newSnackbar(ERROR_SNACK, res.result))
-      }
-    })
-  }
-
-  _handleError(message) {
-    this.props.dispatch(newSnackbar(ERROR_SNACK, message));
-    this.props.dispatch(setModalNavigationPath(`${ADD_COIN}/${AUTHORIZE_COIN}`))
+  _handleError(error) {
+    console.error(error)
+    this.props.setError(error)
   }
 
   async addCoin() {
-    const { addCoinParams, activatedCoins } = this.props
+    const { addCoinParams } = this.props
 
     try {
-      const result = await addCoin(
-        addCoinParams.coinObj,
-        addCoinParams.mode,
-        this.props.dispatch,
-        Object.keys(activatedCoins),
-        addCoinParams.startParams
-      );
+      const result = await initCoin(addCoinParams.chainTicker, addCoinParams.mode, addCoinParams.launchConfig)
 
       if (result.msg === "error") {
-        this._handleError(result.result)
+        this._handleError(new Error(result.result))
       } else {
         this.setState({ done: true }, () => {
           setTimeout(() => {
-            this.props.dispatch(
-              newSnackbar(
-                SUCCESS_SNACK,
-                `${addCoinParams.coinObj.id} added in native mode!`,
-                MID_LENGTH_ALERT
-              )
-            );
-            this.props.closeModal();
+            this.props.completeAuthorization({
+              authorized: true,
+              error: null
+            });
           }, ADDCOIN_DELAY);
         });
       }
     } catch (e) {
-      this._handleError(e.message)
-    }
-  }
-
-  updateSocketsData(data) {
-    const { updateProgressBar } = this.state
-    if (data &&
-        data.msg &&
-        data.msg.type === 'zcpdownload') {
-      const _msg = data.msg;
-
-      if (_msg.status === 'progress' &&
-          _msg.progress) {
-        this.setState(Object.assign({}, this.state, {
-          updateProgressPatch: _msg.progress,
-        }));
-        updateProgressBar[_msg.file] = _msg.progress;
-      } else {
-        if ((_msg.status === 'progress' || _msg.status === 'done') && _msg.file !== 'all') {
-          this.setState({
-            updateProgressBar: {
-              ...this.state.updateProgressBar,
-              [_msg.file]: _msg.progress
-            }
-          }, () => {
-            this.calculateProgress()
-          })
-        } else if (_msg.status === 'done' && _msg.file === 'all') {
-          this.setState({ overallProgress: 100 }, () => {
-            this.addCoin()
-          })
-        } else if (_msg.status === 'error') {
-          this.setState({ done: true, overallProgress: 0, error: _msg.message })
-        }
-      }
+      this._handleError(e)
     }
   }
 
@@ -198,8 +93,7 @@ class ConfigureNative extends React.Component {
 const mapStateToProps = (state) => {
   return {
     path: state.navigation.path,
-    config: state.settings.config,
-    activatedCoins: state.coins.activatedCoins
+    rpcPort: state.rpc.port,
   };
 };
 

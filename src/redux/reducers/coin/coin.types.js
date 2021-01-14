@@ -1,1 +1,0 @@
-export const SET_COIN_INFO = 'SET_COIN_INFO'

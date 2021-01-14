@@ -8,21 +8,31 @@ class AddCoin extends React.Component {
   constructor(props) {
     super(props);
 
-    props.setModalHeader("Add Coin")
     this.state = {
       addCoinParams: {
         chainTicker: null,
         mode: null,
         launchConfig: null,
+        error: null
       }
     }
 
     this.getAddCoinParams = this.getAddCoinParams.bind(this)
+    this.completeAuthorization = this.completeAuthorization.bind(this)
+    this.getError = this.getError.bind(this)
   }
 
   getAddCoinParams(addCoinParams, callback) {
     this.setState({addCoinParams}, () => {if (callback) callback()})
   }
+
+  getError(error) {
+    this.setState({ error })
+  }
+
+  completeAuthorization(result) {
+    console.log(result)
+  } 
 
   render() {
     return AddCoinRender.call(this);
@@ -32,7 +42,9 @@ class AddCoin extends React.Component {
 const mapStateToProps = (state) => {
   return {
     path: state.navigation.path,
-    pathArray: state.navigation.pathArray
+    pathArray: state.navigation.pathArray,
+    port: state.rpc.port,
+    originApp: state.origin.originApp
   };
 };
 

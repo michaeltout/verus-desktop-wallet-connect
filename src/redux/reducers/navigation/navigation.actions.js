@@ -1,4 +1,4 @@
-import { SET_NAVIGATION_PATH } from './navigation.types'
+import { SET_EXTERNAL_ACTION, SET_NAVIGATION_PATH } from './navigation.types'
 import { readNavigationPath } from './navigation.util'
 
 /**
@@ -12,6 +12,18 @@ export const setNavigationPath = (path) => {
     payload: {
       navigationPath: path,
       navigationPathArray: navigationArray
+    }
+  }
+}
+
+/**
+ * Sets the navigation path in the redux store
+ */
+export const setExternalAction = (externalAction) => {
+  return {
+    type: SET_EXTERNAL_ACTION,
+    payload: {
+      externalAction
     }
   }
 }
