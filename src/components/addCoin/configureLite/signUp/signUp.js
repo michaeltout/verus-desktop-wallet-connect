@@ -22,7 +22,7 @@ class SignUp extends React.Component {
   linkUserWithSeed(password) {
     this.setState({ formLock: true }, async () => {
       try {
-        this.props.dispatch(await setUserAuth(this.props.users, this.props.activeUserId, password, this.props.seed))
+        await setUserAuth(this.props.users, this.props.activeUserId, password, this.props.seed)
         this.props.activateCoin()
       } catch (e) {
         console.error(e.message)
@@ -43,7 +43,8 @@ class SignUp extends React.Component {
 const mapStateToProps = (state) => {
   return {
     users: state.user.users,
-    activeUserId: state.user.activeUserId
+    activeUserId: state.user.activeUserId,
+    chainTicker: state.rpc.coinRequest.chainTicker
   };
 };
 

@@ -19,6 +19,7 @@ import passwordStrength from 'passwd-strength';
 import CustomCheckbox from './CustomCheckbox'
 import passphraseGenerator from 'agama-wallet-lib/src/crypto/passphrasegenerator';
 import Divider from '@material-ui/core/Divider';
+import { Button } from '@material-ui/core';
 
 const ENTER_PASSWORD = 0
 const CONFIRM_PASSWORD = 1
@@ -283,11 +284,13 @@ class ProtectedInputForm extends React.Component {
           </FormHelperText>
         </div>
         { !inlineSubmit &&
-          <div className="d-flex d-sm-flex justify-content-center justify-content-sm-center">
+          <div style={{ display: 'flex' }}>
             {step === CONFIRM_PASSWORD && (
-              <button
-                className="btn btn-primary"
-                type="button"
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
                 style={{
                   fontSize: 14,
                   backgroundColor: "rgb(49, 101, 212)",
@@ -299,11 +302,13 @@ class ProtectedInputForm extends React.Component {
                 onClick={this.goBack}
               >
                 {"Back"}
-              </button>
+              </Button>
             )}
-            <button
-              className="btn btn-primary"
-              type="button"
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
               disabled={submitDisabled}
               style={{
                 fontSize: 14,
@@ -316,7 +321,7 @@ class ProtectedInputForm extends React.Component {
               onClick={this.onSubmit}
             >
               {step === ENTER_PASSWORD ? submitBtnText : confirmBtnText}
-            </button>
+            </Button>
           </div>}
       </div>
     );

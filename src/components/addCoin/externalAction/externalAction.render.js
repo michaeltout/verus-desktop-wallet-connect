@@ -21,6 +21,8 @@ export const ExternalActionRender = function () {
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
+          marginTop: 48,
+          width: '100%'
         }}
       >
         <Button
@@ -28,6 +30,11 @@ export const ExternalActionRender = function () {
           fullWidth
           variant="contained"
           color="primary"
+          disabled={loading}
+          onClick={this.openVerusDesktop}
+          style={{
+            width: 240
+          }}
         >
           {"Open Verus Desktop"}
         </Button>
@@ -38,6 +45,9 @@ export const ExternalActionRender = function () {
           color="primary"
           disabled={loading}
           onClick={this.tryUser}
+          style={{
+            width: 240
+          }}
         >
           {"Continue"}
         </Button>

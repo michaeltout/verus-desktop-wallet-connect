@@ -29,18 +29,21 @@ class Error extends React.Component {
             value={this.props.error.stack}
           />
         ) : null}
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            this.props.clearError();
-            this.props.dispatch(setNavigationPath(AUTHORIZE_COIN));
-          }}
-        >
-          {"Try Again"}
-        </Button>
+        {this.props.completeAuthorization && (
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            style={{
+              width: '98%'
+            }}
+            onClick={() => {
+              this.props.completeAuthorization(false, this.props.error);
+            }}
+          >
+            {"Close"}
+          </Button>
+        )}
       </div>
     );
   }

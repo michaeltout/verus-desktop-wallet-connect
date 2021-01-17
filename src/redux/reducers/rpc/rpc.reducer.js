@@ -10,7 +10,8 @@ import {
   ADD_CALLED_TIME,
   SET_RPC_EXPIRY_MARGIN,
   SET_RPC_POST_ENCRYPTION,
-  SET_RPC_COIN_REQUEST
+  SET_RPC_COIN_REQUEST,
+  SET_RPC_WINDOW_ID
 } from "./rpc.types";
 
 export const rpc = (state = {
@@ -20,6 +21,7 @@ export const rpc = (state = {
   appId: VERUS_DESKTOP_AUTHENTICATOR,
   calledTimes: [],
   postEncryption: true,
+  windowId: null,
   coinRequest: {
     chainTicker: null,
     mode: null,
@@ -52,6 +54,11 @@ export const rpc = (state = {
       return {
         ...state,
         postEncryption: action.payload.encryption,
+      };
+    case SET_RPC_WINDOW_ID:
+      return {
+        ...state,
+        windowId: action.payload.windowId,
       };
     case SET_RPC_COIN_REQUEST:
       return {

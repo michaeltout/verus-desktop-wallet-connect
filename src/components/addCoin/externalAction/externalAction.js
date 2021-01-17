@@ -7,6 +7,7 @@ import {
 import { CONFIGURE, EXTERNAL_LOGIN, EXTERNAL_ZCASHPARAMS, NATIVE } from '../../../utils/constants'
 import { checkAndUpdateUsers } from '../../../redux/reducers/user/user.actions';
 import { checkZcashParamsFormatted } from '../../../rpc/calls/zcashParams';
+import { focusVerusDesktop } from '../../../rpc/calls/focus';
 
 class ExternalAction extends React.Component {
   constructor(props) {
@@ -17,6 +18,7 @@ class ExternalAction extends React.Component {
     }
 
     this.tryUser = this.tryUser.bind(this);
+    this.openVerusDesktop = this.openVerusDesktop.bind(this)
 
     this.actionTypes = {
       [EXTERNAL_LOGIN]: {
@@ -47,6 +49,16 @@ class ExternalAction extends React.Component {
         }
       }
     }
+  }
+
+  openVerusDesktop() {
+    this.setState({ loading: true }, async () => {
+      try {
+        await focusVerusDesktop()
+      } catch(e) {}
+      
+      this.setState({ loading: false })
+    })
   }
 
   async tryUser() {

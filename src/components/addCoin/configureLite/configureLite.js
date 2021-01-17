@@ -16,6 +16,7 @@ import { initCoin } from '../../../rpc/calls/initCoin'
 import { authenticateSeed } from '../../../rpc/calls/authenticate'
 import { setNavigationPath } from '../../../redux/reducers/navigation/navigation.actions';
 import { checkAuthentication } from '../../../rpc/calls/checkAuth';
+import { setError } from '../../../redux/reducers/error/error.actions';
 
 class ConfigureLite extends React.Component {
   constructor(props) {
@@ -62,7 +63,7 @@ class ConfigureLite extends React.Component {
 
   _handleError(error) {
     console.error(error)
-    this.props.setError(error)
+    this.props.dispatch(setError(error))
   }
 
   activateCoin(checkedAuth) {
@@ -85,10 +86,7 @@ class ConfigureLite extends React.Component {
         if (result.msg === 'error') {
           this._handleError(new Error(result.result))
         } else {
-          this.props.completeAuthorization({
-            authorized: true,
-            error: null
-          });
+          this.props.completeAuthorization(true);
         }
       } catch (e) {
         this._handleError(e)

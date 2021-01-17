@@ -12,7 +12,8 @@ export const SIMULATED_IPC_INIT = {
     data: {
       expiry_margin: 60000,
       rpc_port: 17775,
-      post_encryption: true
+      post_encryption: true,
+      window_id: 1
     }
   })
 }
@@ -23,8 +24,8 @@ export const SIMULATED_IPC_COIN_REQUEST = {
     type: IPC_PUSH_MESSAGE,
     method: IPC_COIN_REQUEST_METHOD,
     data: {
-      ticker: "VRSCTEST",
-      mode: "native",
+      ticker: "ETH",
+      mode: "eth",
       origin_app_info: {
         id: "VERUS_DESKTOP_MAIN",
         search_builtin: true
@@ -34,4 +35,4 @@ export const SIMULATED_IPC_COIN_REQUEST = {
   })
 }
 
-export const RPC_PASSWORD = ""
+export const RPC_PASSWORD = "a35792af94edd32da7e8f35b1c38c337555482c0542e88d83b00d348289e33a1"

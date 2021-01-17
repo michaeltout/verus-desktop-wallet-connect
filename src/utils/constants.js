@@ -12,6 +12,8 @@ export const API_ERROR = 'error'
 
 // RPC API Calls Used
 export const API_AUTHENTICATE = 'auth'
+export const API_FOCUS = "plugin/focus"
+export const API_CLOSE_PLUGIN = 'plugin/close'
 export const API_ACTIVATE_COIN = 'coins/activate'
 export const API_CHECK_ZCASH_PARAMS = 'zcashparamsexist'
 export const API_DL_ZCASH_PARAMS = 'zcparamsdl'

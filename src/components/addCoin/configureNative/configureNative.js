@@ -11,6 +11,7 @@ import {
 } from "../../../utils/constants";
 import { initCoin } from '../../../rpc/calls/initCoin'
 import { setExternalAction, setNavigationPath } from '../../../redux/reducers/navigation/navigation.actions';
+import { setError } from '../../../redux/reducers/error/error.actions';
 
 class ConfigureNative extends React.Component {
   constructor(props) {
@@ -59,7 +60,7 @@ class ConfigureNative extends React.Component {
 
   _handleError(error) {
     console.error(error)
-    this.props.setError(error)
+    this.props.dispatch(setError(error))
   }
 
   async addCoin() {
@@ -73,10 +74,7 @@ class ConfigureNative extends React.Component {
       } else {
         this.setState({ done: true }, () => {
           setTimeout(() => {
-            this.props.completeAuthorization({
-              authorized: true,
-              error: null
-            });
+            this.props.completeAuthorization(true);
           }, ADDCOIN_DELAY);
         });
       }

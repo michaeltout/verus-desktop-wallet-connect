@@ -11,14 +11,14 @@ import AuthorizeCoin from './authorizeCoin/authorizeCoin'
 import ExternalLogin from './externalAction/externalAction'
 import Loading from '../Loading';
 import Error from './error/error';
+import { setError } from '../../redux/reducers/error/error.actions';
 
 export const AddCoinRender = function() {
   const COMPONENT_PROPS = {
     pathArray: this.props.pathArray,
     setAddCoinParams: this.getAddCoinParams,
     addCoinParams: this.state.addCoinParams,
-    completeAuthorization: this.completeAuthorization,
-    setError: this.getError
+    completeAuthorization: this.completeAuthorization
   }
 
   const COMPONENT_MAP = {
@@ -44,8 +44,12 @@ export const AddCoinRender = function() {
     )
   };
 
-  return this.state.error != null ? (
-    <Error error={this.state.error} clearError={() => this.setState({ error: null })}/>
+  return this.props.error != null ? (
+    <Error
+      error={this.props.error}
+      clearError={() => this.props.dispatch(setError(null))}
+      completeAuthorization={this.completeAuthorization}
+    />
   ) : this.props.port != null && this.props.originApp != null ? (
     this.props.pathArray[0] ? (
       COMPONENT_MAP[this.props.pathArray[0]]

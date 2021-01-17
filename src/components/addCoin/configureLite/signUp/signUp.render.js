@@ -1,3 +1,4 @@
+import { Button } from '@material-ui/core';
 import React from 'react';
 import ProtectedInputForm from '../../../ProtectedInputForm';
 
@@ -34,7 +35,7 @@ export const SignUpRenderChoices = function() {
             maxWidth: "100%"
           }}
         >
-          Would you like to make this seed the main seed for&nbsp;<strong>{" " + this.props.activeUser.name}</strong>?
+          Would you like to make this seed the main seed for&nbsp;<strong>{" " + this.props.users[this.props.activeUserId].name}</strong>?
         </h1>
       </div>
       <div
@@ -56,9 +57,11 @@ export const SignUpRenderChoices = function() {
           }
         </h1>
       </div>
-      <button
-        className="btn btn-primary"
-        type="button"
+      <Button
+        type="submit"
+        fullWidth
+        variant="contained"
+        color="primary"
         disabled={formLock}
         style={{
           fontSize: 14,
@@ -69,7 +72,7 @@ export const SignUpRenderChoices = function() {
         onClick={this.toggleAttachSeed}
       >
         {"Yes, attach my seed to this profile"}
-      </button>
+      </Button>
       <a
         className="text-right"
         disabled={formLock}
@@ -84,7 +87,7 @@ export const SignUpRenderChoices = function() {
           color: "#3f51b5"
         }}
       >
-        {`No, just add ${this.props.addCoinParams.coinObj.id}`}
+        {`No, just add ${this.props.chainTicker}`}
       </a>
     </React.Fragment>
   );

@@ -6,6 +6,7 @@ import {
   SET_RPC_PASSWORD,
   SET_RPC_PORT,
   SET_RPC_POST_ENCRYPTION,
+  SET_RPC_WINDOW_ID,
 } from "./rpc.types";
 
 export const setRpcAppId = (appId) => {
@@ -58,6 +59,15 @@ export const setRpcPostEncryption = (encryption) => {
     type: SET_RPC_POST_ENCRYPTION,
     payload: {
       encryption
+    }
+  }
+}
+
+export const setRpcWindowId = (windowId) => {
+  return {
+    type: SET_RPC_WINDOW_ID,
+    payload: {
+      windowId
     }
   }
 }

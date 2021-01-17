@@ -1,3 +1,4 @@
+import { Button } from '@material-ui/core';
 import React from 'react';
 import ProtectedInputForm from '../../../ProtectedInputForm'
 
@@ -42,9 +43,11 @@ export const SetupRenderChoices = function() {
           {"or"}
         </h1>
       </div>
-      <button
-        className="btn btn-primary"
-        type="button"
+      <Button
+        type="submit"
+        fullWidth
+        variant="contained"
+        color="primary"
         style={{
           fontSize: 14,
           backgroundColor: "rgb(49, 101, 212)",
@@ -54,7 +57,7 @@ export const SetupRenderChoices = function() {
         onClick={ this.toggleSeedGenerator }
       >
         {"Generate a New Seed"}
-      </button>
+      </Button>
     </React.Fragment>
   )
 }

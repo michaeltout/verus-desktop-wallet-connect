@@ -34,6 +34,7 @@ export const AuthorizeCoinRender = function () {
           variant="contained"
           color="primary"
           disabled={loading}
+          onClick={() => this.props.completeAuthorization(false)}
           style={{
             width: 100
           }}
