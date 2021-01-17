@@ -19,6 +19,10 @@ class SignUp extends React.Component {
     this.toggleAttachSeed = this.toggleAttachSeed.bind(this)
   }
 
+  componentDidMount() {
+    this.props.activateCoin()
+  }
+
   linkUserWithSeed(password) {
     this.setState({ formLock: true }, async () => {
       try {

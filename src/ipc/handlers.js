@@ -4,7 +4,6 @@ import { setRpcCoinRequest, setRpcExpiryMargin, setRpcPassword, setRpcPort, setR
 import store from "../redux/store"
 import { IPC_COIN_REQUEST_METHOD, IPC_INIT_MESSAGE, IPC_ORIGIN_DEV, IPC_ORIGIN_PRODUCTION, IPC_PUSH_MESSAGE } from "../utils/constants"
 import { setOriginAppId, setOriginAppBuiltin } from "../redux/reducers/origin/origin.actions"
-import { setError } from "../redux/reducers/error/error.actions"
 
 export const handleIpc = async (event) => {
   try {
@@ -39,7 +38,6 @@ export const handleIpc = async (event) => {
       console.log(`[IPC] recieved event message from unapproved origin (${event.origin}), blocked`)
     }
   } catch(e) {
-    console.error("Error encountered during initialization:")
-    store.dispatch(setError(e))
+    console.error(e)
   }
 }

@@ -3,17 +3,19 @@ import React from 'react';
 import ProtectedInputForm from '../../../ProtectedInputForm';
 
 export const SignUpRender = function() {
-  return (
-    <div style={{
-      height: "100%",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-    }}>
-      { this.state.attachSeed ? SignUpRenderForm.call(this) : SignUpRenderChoices.call(this) }
-    </div>
-  );
+  // TODO: Redesign to avoid risk of modifying user file from multiple sources
+  // return (
+  //   <div style={{
+  //     height: "100%",
+  //     display: "flex",
+  //     flexDirection: "column",
+  //     alignItems: "center",
+  //     justifyContent: "center",
+  //   }}>
+  //     { this.state.attachSeed ? SignUpRenderForm.call(this) : SignUpRenderChoices.call(this) }
+  //   </div>
+  // );
+  return null
 }
 
 export const SignUpRenderChoices = function() {
