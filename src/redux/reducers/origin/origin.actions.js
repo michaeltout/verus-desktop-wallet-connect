@@ -1,28 +1,28 @@
 import { SET_ORIGIN_APP, SET_ORIGIN_APP_ID, SET_ORIGIN_APP_TYPE } from "./origin.types";
 
-export const setOriginApp = (originApp) => {
+export const setOriginApp = (originDapp) => {
   return {
     type: SET_ORIGIN_APP,
     payload: {
-      originApp
+      originDapp
     }
   }
 }
 
-export const setOriginAppId = (originAppId) => {
+export const setOriginAppId = (originDappId) => {
   return {
     type: SET_ORIGIN_APP_ID,
     payload: {
-      originAppId
+      originDappId
     }
   }
 }
 
-export const setOriginAppBuiltin = (originAppBuiltin) => {
+export const setOriginAppBuiltin = (originDappBuiltin) => {
   return {
     type: SET_ORIGIN_APP_TYPE,
     payload: {
-      originAppBuiltin
+      originDappBuiltin
     }
   }
 }

@@ -4,7 +4,7 @@ import { NATIVE } from '../../../utils/constants'
 
 export const AuthorizeCoinRender = function () {
   const { loading } = this.state
-  const { coinRequest, originApp } = this.props
+  const { coinRequest, originDapp } = this.props
   const { chainTicker, mode } = coinRequest
 
   return (
@@ -17,7 +17,7 @@ export const AuthorizeCoinRender = function () {
         justifyContent: "center",
       }}
     >
-      {`${originApp.name} is trying to connect to ${chainTicker} in ${mode === NATIVE ? 'native' : `lite (${mode})` } mode. Would you like to authorize this action?`}
+      {`${originDapp.name} is trying to connect to ${chainTicker} in ${mode === NATIVE ? 'native' : `lite (${mode})` } mode. Would you like to authorize this action?`}
       <div
         style={{
           display: "flex",

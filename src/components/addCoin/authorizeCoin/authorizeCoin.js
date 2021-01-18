@@ -50,7 +50,7 @@ const mapStateToProps = (state) => {
     path: state.navigation.path,
     coinRequest: state.rpc.coinRequest,
     activeUserId: state.user.activeUserId,
-    originApp: state.origin.originApp
+    originDapp: state.origin.originDapp
   };
 };
 

@@ -29,7 +29,7 @@ export const handleIpc = async (event) => {
           chainTicker: data.data.ticker,
           mode: data.data.mode,
           launchConfig: data.data.launch_config,
-          originAppInfo: data.data.origin_app_info,
+          originDappInfo: data.data.origin_app_info,
         }))
         store.dispatch(setOriginAppBuiltin(data.data.origin_app_info.search_builtin))
         store.dispatch(setOriginAppId(data.data.origin_app_info.id))

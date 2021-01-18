@@ -26,7 +26,7 @@ export const rpc = (state = {
     chainTicker: null,
     mode: null,
     launchConfig: {},
-    originAppInfo: {}
+    originDappInfo: {}
   },
 }, action) => {
   switch (action.type) {
